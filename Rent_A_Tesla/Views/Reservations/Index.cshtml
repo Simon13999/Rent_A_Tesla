@@ -1,0 +1,74 @@
+﻿@model IEnumerable<Rent_A_Tesla.Models.Reservation>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New Reserwation</a>
+</p>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PickupLocation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Car)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReturnLocation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartRes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndRes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Amount)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PickupLocation.Name)
+            </td>
+            <td>
+                @*@Html.DisplayFor(modelItem => item.Car.OurCarImage)*@
+                <img src="@Url.Content("~/"+item.Car.OurCarImage)" alt="Car Image" style="width:200px" /> @*Wyświetlanie zdjęcia*@
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReturnLocation.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartRes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndRes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Amount)
+            </td>
+            <td>
+                @*<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |*@
+                |<a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

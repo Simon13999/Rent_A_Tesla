@@ -1,0 +1,78 @@
+﻿@model IEnumerable<Rent_A_Tesla.Models.OurCars>
+
+@{
+    ViewData["Title"] = "Car database";
+}
+
+<h1>Car database</h1>
+
+<p>
+    <a asp-action="Create">Add car</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.CarId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MaxSpeed)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Range)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Seats)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PricePerDay)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsAvailable)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Location)
+            </th>
+            
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                <img src="@Url.Content("~/"+item.OurCarImage)" alt="Car Image" style="width:200px" /> @*Wyświetlanie zdjęcia*@
+
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Car.Model)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaxSpeed)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Range)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Seats)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PricePerDay)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsAvailable)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Location.Name)
+            </td>
+            
+            <td>
+                |<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> <br/>
+                @*|<a asp-action="Details" asp-route-id="@item.Id">Details</a> *@
+                |<a asp-action="Delete" asp-route-id="@item.Id">Delete</a> 
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,0 +1,92 @@
+﻿@model IEnumerable<Rent_A_Tesla.Models.Location>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+@if (User.IsInRole("Admin"))
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.LocImage)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Street)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.City)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PostalCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Country)
+            </th>
+            
+            <th>Cars</th>
+            <th></th>
+            
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                <img src="@item.LocImage" alt="Location Picture" style="width:150px;">
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Street)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.City)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PostalCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Country)
+            </td>
+            
+            
+            <td>
+                <table>
+                    <tr>
+                        <th>Model</th>
+                        <th>Price Per Day</th>
+                    </tr>
+                @foreach (var car in item.Car) {
+                    <tr>
+                        
+                        <td><img src="@Url.Content("~/"+car.OurCarImage)" alt="Car Image" style="width:200px" /> @*Wyświetlanie zdjęcia*@</td>
+                        <td>@Html.DisplayFor(modelItem => car.PricePerDay)</td>
+                        @*<td<img src="@item.CarImage" alt="Car Picture" style="width:150px;"></td>*@
+                    </tr>
+                }
+                </table>
+            </td>
+            @if (User.IsInRole("Admin"))
+                {
+                    <td>
+                        |<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> <br/>
+                        |<a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                }
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,0 +1,72 @@
+﻿@model IEnumerable<Rent_A_Tesla.Models.CarModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+@if (User.IsInRole("Admin"))
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CarImage)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Model)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Production)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BodyStyle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Seats)
+            </th>
+            
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                <img src="@item.CarImage" alt="Car Picture" style="width:150px;">
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Model)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Production)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BodyStyle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Seats)
+            </td>
+            @if (User.IsInRole("Admin"))
+                {
+                    <td>
+                        |<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> <br/>
+                        |<a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                }
+        </tr>
+}
+    </tbody>
+</table>

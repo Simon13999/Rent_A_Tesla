@@ -1,0 +1,108 @@
+﻿@model Rent_A_Tesla.Models.Reservation
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create reservation</h1>
+
+<h4></h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @*<div class="form-group">
+                <label asp-for="Date" class="control-label"></label>
+                <input asp-for="Date" class="form-control" />
+                <span asp-validation-for="Date" class="text-danger"></span>
+            </div>*@
+            <div class="form-group mb-3">
+                <label asp-for="PickupLocationId" class="control-label"></label>
+                <select asp-for="PickupLocationId" class ="form-control" asp-items="ViewBag.PickupLocationId"></select>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="ReturnLocationId" class="control-label"></label>
+                <select asp-for="ReturnLocationId" class ="form-control" asp-items="ViewBag.ReturnLocationId"></select>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="StartRes" class="control-label"></label>
+                <input asp-for="StartRes" class="form-control" />
+                <span asp-validation-for="StartRes" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="EndRes" class="control-label"></label>
+                <input asp-for="EndRes" class="form-control" />
+                <span asp-validation-for="EndRes" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="CarId" class="control-label"></label>
+                <select asp-for="CarId" class="form-control" asp-items="ViewBag.CarId"></select>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="Amount" class="control-label"></label>
+                <input asp-for="Amount" class="form-control" readonly />
+                <span asp-validation-for="Amount" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-2">
+                <input type="submit" value="Create" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Go to reservation</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@*
+<div>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</div>*@
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        function updateTotalAmount() {
+            var carId = $('#CarId').val();
+            var startDate = new Date($('#StartRes').val());
+            var endDate = new Date($('#EndRes').val());
+            var timeDiff = endDate - startDate;
+            var days = Math.ceil(timeDiff / (1000 * 3600 * 24)) + 1; 
+
+            if (!isNaN(days) && days > 0 && carId) {
+                $.getJSON('/Reservations/GetPricePerDay', { carId: carId }, function(pricePerDay) {
+                    var totalAmount = days * pricePerDay;
+                    $('#Amount').val(totalAmount.toFixed(2));
+                });
+            }
+        }
+
+        $(document).ready(function() {
+            $('#CarId, #StartRes, #EndRes').change(updateTotalAmount);
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            function fetchCars() {
+                var locationId = $('#PickupLocationId').val();
+                var startRes = $('#StartRes').val();
+                var endRes = $('#EndRes').val();
+                if (locationId && startRes && endRes) {
+                    $.ajax({
+                        url: '/Reservations/GetCarsByLocation',
+                        data: { locationId: locationId, startRes: startRes, endRes: endRes },
+                        success: function (data) {
+                            var select = $('#CarId');
+                            select.empty().append('<option value="">Wybierz auto</option>');
+                            data.forEach(function (item) {
+                                select.append($('<option>', { value: item.id, text: item.model }));
+                            });
+                        }
+                    });
+                }
+            }
+            $('#PickupLocationId, #StartRes, #EndRes').change(fetchCars);
+        });
+    </script>
+
+}
